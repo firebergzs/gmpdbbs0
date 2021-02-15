@@ -47,7 +47,7 @@ $option = "";
 if (isset($_GET["place"])){
 	$place = $_GET["place"];
 	$place = str_replace(";", "", $place);
-	$option = "where place = \"${place}\" ";
+	$option = "where place like \"%${place}%\" ";
 }
 
 $sql = "select place, bbsurl, bbstitle, postat, message, h_w, height, weight, age from bakusai ${option}order by postat desc";
@@ -59,6 +59,7 @@ if (is_int($limit) && $limit > 0){
 	$load_all_data = "<a href=\"./\">load all data (${all_count} records)</a> <- will take several minutes...😅";
 }
 $articles = $db->query($sql);
+$sql = str_replace("\"", "\\\"", $sql);
 write_log($db, "execute_query", $sql);
 $count = count($articles);
 $count_str = number_format($count);
