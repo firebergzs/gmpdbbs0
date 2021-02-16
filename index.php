@@ -69,6 +69,16 @@ $first = $match_date[0];
 $sql = "select place, count(*) as count from bakusai group by place order by count desc";
 $places = $db->query($sql);
 
+$requri = $_SERVER["REQUEST_URI"];
+if (strpos($requri, "key=")){
+	$newuri = preg_replace("/\?key=.*&/", "?", $requri);
+	$newuri = preg_replace("/&key=.*&/", "&", $newuri);
+	$newuri = preg_replace("/&key=.*/", "", $newuri);
+	$uri_arr = explode("/", $newuri);
+	$param = $uri_arr[count($uri_arr)-1];
+	header("Location:./${param}");
+}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -161,8 +171,8 @@ $places = $db->query($sql);
 	<button class="button btn-primary" style="border-radius: 8px; margin: 12px; padding: 4px;" onclick="filter_gmpd(this);">gmpd only</button>
 	<button class="button btn-primary" style="border-radius: 8px; margin: 12px; padding: 4px;" onclick="switch_places(this);">show places</button>
 
-	<div id="places" style="display: none;">
-		<table class="table table-striped table-dark" style="border-radius: 12px;">
+	<div id="places" style="display: none; width:70%; margin: auto;">
+		<table class="table table-striped table-dark" style="border-radius: 12px; overflow: hidden;">
 			<thead style="background-color: orange;">
 				<tr>
 					<th>Place</th>
@@ -177,7 +187,7 @@ foreach($places as $row){
 ?>
 				<tr>
 					<td><a href="./?place=<?=$place?>&limit=1000"><?=$place?></a></td>
-					<td><?=$count?></td>
+					<td><?=number_format($count)?></td>
 				</tr>
 <?php
 }
