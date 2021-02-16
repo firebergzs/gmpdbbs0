@@ -65,6 +65,10 @@ $count = count($articles);
 $count_str = number_format($count);
 preg_match("/\d{4}-\d{2}-\d{2}/", $articles[$count-1]["postat"], $match_date);
 $first = $match_date[0];
+
+$sql = "select place, count(*) as count from bakusai group by place order by count desc";
+$places = $db->query($sql);
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -133,6 +137,18 @@ $first = $match_date[0];
 		function hide_popover(){
 			$("span").popover("hide");
 		}
+		function switch_places(obj){
+			if (obj.innerText == "close places"){
+				// document.getElementById("places").style = "display: none;"
+				obj.innerText = "show places";
+				obj.classList.add("btn-primary");
+			} else {
+				// document.getElementById("places").style = "display: inline;"
+				obj.innerText = "close places";
+				obj.classList.remove("btn-primary");
+			}
+			$("#places").slideToggle();
+		}
 	</script>
 
 </head>
@@ -140,8 +156,37 @@ $first = $match_date[0];
 	<h3 style="text-shadow: 1px 2px 3px;"><a href="./?limit=1000" style="color: #fff;">Bakusai Database</a></h3>
 	<span style="color: #ddd;">now <?=$count_str?> messages since <?=$first?></span><br>
 	<?=$load_all_data?><br>
+	<a href="https://gmpddev.gndf.net/public/dashboard/184c8327-1068-41b1-b944-227576181f84" target="_blank">Analysis Dashboard</a><br>
 	<span id="description"></span><br>
 	<button class="button btn-primary" style="border-radius: 8px; margin: 12px; padding: 4px;" onclick="filter_gmpd(this);">gmpd only</button>
+	<button class="button btn-primary" style="border-radius: 8px; margin: 12px; padding: 4px;" onclick="switch_places(this);">show places</button>
+
+	<div id="places" style="display: none;">
+		<table class="table table-striped table-dark" style="border-radius: 12px;">
+			<thead style="background-color: orange;">
+				<tr>
+					<th>Place</th>
+					<th>Count</th>
+				</tr>
+			</thead>
+			<tbody>
+<?php
+foreach($places as $row){
+	$place = $row["place"];
+	$count = $row["count"];
+?>
+				<tr>
+					<td><a href="./?place=<?=$place?>&limit=1000"><?=$place?></a></td>
+					<td><?=$count?></td>
+				</tr>
+<?php
+}
+?>
+			</tbody>
+		</table>
+	</div>
+
+
 	<table class="table table-responsive table-striped table-dark" id="dataTable" width="100%" cellspacing="0" style="border-radius: 12px;">
 		<thead style="background-color: royalblue;">
 			<tr>
