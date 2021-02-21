@@ -127,9 +127,11 @@ if (strpos($requri, "key=")){
 				table.columns(7).search("debu|gachimuchi", true).draw();
 				obj.innerText = "clear filter";
 				obj.classList.remove("btn-primary");
+				obj.classList.add("btn-secondary");
 			} else {
 				table.columns(7).search(".", true).draw();
 				obj.innerText = "gmpd only";
+				obj.classList.remove("btn-secondary");
 				obj.classList.add("btn-primary");
 			}
 		}
@@ -151,11 +153,13 @@ if (strpos($requri, "key=")){
 			if (obj.innerText == "close places"){
 				// document.getElementById("places").style = "display: none;"
 				obj.innerText = "show places";
+				obj.classList.remove("btn-secondary");
 				obj.classList.add("btn-primary");
 			} else {
 				// document.getElementById("places").style = "display: inline;"
 				obj.innerText = "close places";
 				obj.classList.remove("btn-primary");
+				obj.classList.add("btn-secondary");
 			}
 			$("#places").slideToggle();
 		}
@@ -168,8 +172,8 @@ if (strpos($requri, "key=")){
 	<?=$load_all_data?><br>
 	<a href="https://gmpddev.gndf.net/public/dashboard/184c8327-1068-41b1-b944-227576181f84" target="_blank">Analysis Dashboard</a><br>
 	<span id="description"></span><br>
-	<button class="button btn-primary" style="border-radius: 8px; margin: 12px; padding: 4px;" onclick="filter_gmpd(this);">gmpd only</button>
-	<button class="button btn-primary" style="border-radius: 8px; margin: 12px; padding: 4px;" onclick="switch_places(this);">show places</button>
+	<button class="btn btn-primary" style="border-radius: 8px; margin: 12px; padding: 4px;" onclick="filter_gmpd(this);">gmpd only</button>
+	<button class="btn btn-primary" style="border-radius: 8px; margin: 12px; padding: 4px;" onclick="switch_places(this);">show places</button>
 
 	<div id="places" style="display: none; width:70%; margin: auto;">
 		<table class="table table-striped table-dark" style="border-radius: 12px; overflow: hidden;">
